@@ -1,0 +1,34 @@
+---
+
+- name: install docker
+  yum:
+    name: docker
+    state: present
+
+- name: add vagrant to docker group
+  shell: usermod -aG docker vagrant
+
+- name: enable docker
+  shell: systemctl enable docker.service
+
+- name: start docker
+  shell: systemctl start docker.service
+
+- name: docker-compose url
+  shell: |
+    echo "https://github.com/docker/compose/releases/download/{{ docker_compose.version }}/docker-compose-$(uname -s)-$(uname -m)"
+  register: url
+
+- name: install docker-compose
+  get_url:
+    url: "{{ url.stdout }}"
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+
+- name: swapoff
+  shell: swapoff -a
+
+# - name: disable selinux
+#   shell: setforce 0
+
+

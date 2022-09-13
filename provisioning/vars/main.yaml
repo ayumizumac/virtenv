@@ -1,0 +1,8 @@
+---
+#  https://github.com/docker/compose/releases
+docker_compose:
+  version: 1.28.6
+
+helm:
+  version: 3.9.4
+

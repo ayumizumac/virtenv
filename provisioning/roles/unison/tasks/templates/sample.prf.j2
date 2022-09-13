@@ -1,0 +1,26 @@
+# priorities for newer
+prefer = newer
+
+# sync targets
+root = /samba/sync/xx/
+root = /home/vagrant/workspace/xxx/
+
+# ignore targets
+ignore = Name *.dump
+ignore = Name *.bz2
+ignore = Name gc.log.*
+ignore = Name gc.log.*.current
+ignore = Name screen-output.*.log
+ignore = Regex .*/target/.*
+ignore = Regex .*/logs/.*
+ignore = Regex target/.*
+ignore = Regex logs/.*
+ignore = Path .idea
+ignore = Regex data/.*
+
+repeat = 1
+batch = true
+silent = true
+log = false
+debug = false
+

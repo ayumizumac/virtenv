@@ -1,0 +1,39 @@
+---
+
+- name: mkdir for samba dockerfile
+  file:
+    path: /home/vagrant/docker/samba
+    state: directory
+    mode: 0755
+
+- name: mkdir for samba
+  file:
+     path: /samba
+     state: directory
+     owner: vagrant
+     group: vagrant
+     mode: 0755
+
+- name: dockerfile for samba
+  template:
+    src: Dockerfile.j2
+    dest: /home/vagrant/docker/samba/Dockerfile
+    mode: 0644
+
+- name: build samba
+  shell: |
+    docker build -t samba .
+  args:
+    chdir: /home/vagrant/docker/samba
+
+- name: check samba
+  shell: |
+    docker stats samba --no-stream > /dev/null 2>&1
+  register: is_exist
+  ignore_errors: yes
+
+- name: samba
+  when: is_exist.rc != 0
+  shell: |
+    docker run --name samba --restart always -d -p 139:139 -p 445:445 -v /samba:/samba/share -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro samba
+

@@ -1,0 +1,36 @@
+---
+
+- name: adjust repo
+  template:
+    src: kubernetes.repo.j2
+    dest: /home/vagrant/kubernetes.repo
+    mode: 0644
+
+- name: mkdir repo
+  shell: mkdir -p /etc/yum.repos.d/
+
+- name: copy
+  shell: cp /home/vagrant/kubernetes.repo /etc/yum.repos.d/
+
+- name: kube install
+  shell: yum install -y kubelet kubeadm kubectl
+
+#  shell: yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+- name: start
+  shell: systemctl enable kubelet && systemctl start kubelet
+
+- name: make script
+  template:
+    src: kuberconf.sh.j2
+    dest: /home/vagrant/kuberconf.sh
+    mode: 0755
+  
+- name: get helm
+  shell: wget https://get.helm.sh/helm-v{{ helm.version }}-linux-amd64.tar.gz
+
+- name: unarchive helm
+  shell: tar xzvf helm-v{{ helm.version  }}-linux-amd64.tar.gz
+
+- name: cp to usrlocalbin
+  shell: cp linux-amd64/helm /usr/local/bin/

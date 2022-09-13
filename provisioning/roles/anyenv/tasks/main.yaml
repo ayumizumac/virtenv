@@ -1,0 +1,10 @@
+---
+
+- name: get anyenv 
+  shell: git clone https://github.com/anyenv/anyenv ~/.anyenv
+
+- name: path for bash_profile
+  shell: echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.bash_profile
+
+- name: eval for anyenv
+  shell: echo 'eval "$(anyenv init -)"' >> ~/.bash_profile 

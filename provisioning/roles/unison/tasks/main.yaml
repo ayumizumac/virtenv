@@ -1,0 +1,20 @@
+---
+
+- name: install unison
+  yum:
+    name: unison
+    state: present
+
+- name: kdir for unison
+  file:
+    path: /home/vagrant/.unison
+    state: directory
+    owner: vagrant
+    group: vagrant
+    mode: 0700
+
+- name: generate profile
+  template:
+    src: sample.prf.j2
+    dest: /home/vagrant/.unison/sample.prf
+    mode: 0644

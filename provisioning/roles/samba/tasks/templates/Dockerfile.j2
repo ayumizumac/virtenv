@@ -1,0 +1,33 @@
+FROM alpine:3.10
+
+RUN mkdir -p /samba/share &&  \
+    chmod -R 0777 /samba/share && \
+	chown -R nobody:nobody  /samba/share
+
+# install samba
+
+RUN apk update && \
+    apk add samba
+
+RUN { \
+	echo "[global]"; \
+	echo "  security = user"; \
+	echo "  map to guest = Bad User"; \
+	echo "  guest account = nobody"; \
+	echo "  min protocol = SMB2"; \
+	echo "  unix extensions = no"; \
+	echo "  wide links = yes"; \
+	echo "  max protocol = SMB2"; \
+	echo "[public]"; \
+	echo "  path = /samba/share"; \
+	echo "  writable = yes"; \
+	echo "  force user = vagrant"; \
+	echo "  force group = vagrant"; \
+	echo "  guest ok = yes"; \
+	echo "  guest only = yes"; \
+	echo "  create mode = 0644"; \
+	echo "  directory mode = 0755"; \
+} > /etc/samba/smb.conf
+
+EXPOSE 139 445
+

@@ -1,0 +1,17 @@
+---
+
+- name: yum update
+  yum:
+    name: "*"
+    state: latest
+
+- name: Ensure libselinux-python is installed.
+  yum:
+    name: "libselinux-python"
+    state: installed
+
+- name: install epel-release
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+
